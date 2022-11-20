@@ -7,7 +7,6 @@ import {
 	SelectMenuInteraction,
 	MessageContextMenuCommandInteraction,
 	UserContextMenuCommandInteraction,
-	EmbedBuilder,
 	ChatInputCommandInteraction,
 } from 'discord.js';
 

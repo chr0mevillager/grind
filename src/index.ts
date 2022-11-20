@@ -1,7 +1,6 @@
 import "./exports/vars";
 import { client } from "./exports/client";
 import commands from "./commands";
-import { InteractionType } from "discord.js";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {

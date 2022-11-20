@@ -1,4 +1,4 @@
-import { ApplicationCommandType, EmbedBuilder } from "discord.js";
+import { ApplicationCommandType } from "discord.js";
 import { CustomCommand } from "../exports/types";
 
 let test: CustomCommand = {
@@ -11,10 +11,6 @@ let test: CustomCommand = {
 	async chatExecute(interaction) {
 		//Execute code when this command is used
 		interaction.reply("test complete!");
-	},
-
-	async onReadyExecute() {
-		//Execute code when the bot goes online
 	},
 
 	async globalMessageInteractionnExecute(interaction) {
