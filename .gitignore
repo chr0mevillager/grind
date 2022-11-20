@@ -1,0 +1,10 @@
+node_modules
+.DS_Store
+._*
+/build
+yarn-error.log
+.env
+updating_instructions.md
+example_command.ts
+developer_docs.md
+dist
