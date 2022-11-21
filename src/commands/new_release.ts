@@ -151,7 +151,7 @@ let new_release: CustomCommand = {
 			embeds: [
 				new EmbedBuilder()
 					.setTitle(interaction.options.getString("title"))
-					.setDescription("```" + interaction.options.getString("short_description") + "```\n```" + "Find any bugs or have any suggestions? Let us know below!" + "```")
+					.setDescription("```" + interaction.options.getString("short_description") + "```")
 					.setColor(clearColor)
 				//.setThumbnail()
 			],
