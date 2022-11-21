@@ -43,6 +43,12 @@ let new_release: CustomCommand = {
 				required: true,
 			},
 			{
+				name: "version",
+				description: "What version was this release made on?",
+				type: ApplicationCommandOptionType.String,
+				required: true,
+			},
+			{
 				name: "banner_image",
 				description: "What is the banner of the release?",
 				type: ApplicationCommandOptionType.Attachment,
@@ -118,8 +124,20 @@ let new_release: CustomCommand = {
 				embeds: [
 					new EmbedBuilder()
 						.setTitle(interaction.options.getString("title"))
-						.setDescription("```" + interaction.options.getString("short_description") + "```\n```" + "Find any bugs or have any suggestions? Let us know below!" + "```")
+						.setDescription("```" + interaction.options.getString("short_description") + "```")
 						.setColor(clearColor)
+						.addFields([
+							{
+								name: "Feedback",
+								value: "```Find any bugs or have any suggestions? Let us know below!```",
+								inline: true,
+							},
+							{
+								name: "Version Support",
+								value: "```This release was designed for version " + interaction.options.getString("version") + ". Using this on other versions may lead to unexpected behavior.```",
+								inline: true,
+							},
+						])
 					//.setThumbnail()
 				],
 				components: [
@@ -154,7 +172,7 @@ let new_release: CustomCommand = {
 					.setTitle(interaction.options.getString("title"))
 					.setDescription("```" + interaction.options.getString("short_description") + "```")
 					.setColor(clearColor)
-				//.setThumbnail()
+					.setThumbnail("https://github.com/chr0mevillager/grind/blob/master/src/artwork/new.png?raw=true")
 			],
 			components: [
 				new ActionRowBuilder<ButtonBuilder>()
