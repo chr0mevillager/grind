@@ -154,7 +154,14 @@ let send: CustomCommand = {
 				.setTitle(interaction.options.getString("title"))
 				.setColor(clearColor)
 
-			if (interaction.options.getString("description")) message.setDescription("```" + interaction.options.getString("description") + "```");
+			if (interaction.options.getString("description")) {
+				let description = "";
+				try {
+					description = JSON.parse('"' + (interaction.options.getString("description")).replace(/"/g, '\\"') + '"');
+				} catch { }
+				message.setDescription("```" + description + "```");
+			}
+
 			if (interaction.options.getAttachment("icon")) message.setThumbnail(interaction.options.getAttachment("icon").attachment);
 			if (interaction.options.getAttachment("banner")) message.setImage(interaction.options.getAttachment("banner").attachment);
 
