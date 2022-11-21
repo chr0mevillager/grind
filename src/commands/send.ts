@@ -50,7 +50,7 @@ let send: CustomCommand = {
 			},
 			{
 				name: "message",
-				"description": "Send an embedded message.",
+				description: "Send an embedded message.",
 				type: ApplicationCommandOptionType.Subcommand,
 				options: [
 					{
@@ -80,6 +80,11 @@ let send: CustomCommand = {
 						required: false,
 					},
 				]
+			},
+			{
+				name: "ping",
+				description: "Ping everyone.",
+				type: ApplicationCommandOptionType.Subcommand,
 			}
 		]
 	},
@@ -153,6 +158,19 @@ let send: CustomCommand = {
 
 			interaction.channel.send({
 				embeds: [message]
+			});
+		} else if (interaction.options.getSubcommand() === "ping") {
+			const responseEmbed = new EmbedBuilder()
+				.setTitle("Ping Sent")
+				.setColor(mainColor)
+
+			interaction.reply({
+				embeds: [responseEmbed],
+				ephemeral: true,
+			});
+
+			interaction.channel.send({
+				content: "@everyone"
 			});
 		}
 	},
