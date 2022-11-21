@@ -1,17 +1,19 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, ForumChannel, GuildChannel, GuildChannelType, GuildTextBasedChannel, ThreadChannel, ThreadChannelType } from "discord.js";
-import { client } from "../exports/client";
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "@discordjs/builders";
+import { ApplicationCommandOptionType, ApplicationCommandType, ButtonStyle, ForumChannel, TextChannel, } from "discord.js";
+import { clearColor, mainColor } from "../exports/colors";
+import emojis from "../exports/emoji";
 import { CustomCommand } from "../exports/types";
 
 //Timeline of events
 /*
 
-1. Create a new forum post
-2. Post in forum
+1. Post in forum channel
   - Banner image
-  - Title, short description, ty video in a message
-  - Download link + mcpedl link in buttons
+  - Title, short description in a message
+  - Download link + mcpedl link in buttons, video link
   - Ask for questions, suggestions, bug report in message
-  - Pin banner image
+2. Post direct download link in a message
+  - Link to forum post
 3. Make announcement
   - Ping everyone
   - Title, short description in a message
@@ -52,8 +54,14 @@ let new_release: CustomCommand = {
 				required: true,
 			},
 			{
-				name: "download_link",
-				description: "What is the download link of the release? (Link)",
+				name: "direct_download_link",
+				description: "What is the direct download link of the release? (Link)",
+				type: ApplicationCommandOptionType.String,
+				required: true,
+			},
+			{
+				name: "linkvertise_download_link",
+				description: "What is the linkvertise download link of the release? (Link)",
 				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
@@ -75,15 +83,130 @@ let new_release: CustomCommand = {
 				type: ApplicationCommandOptionType.Channel,
 				required: true,
 			},
+			{
+				name: "direct_download_channel",
+				description: "What is the direct download channel to post to?",
+				type: ApplicationCommandOptionType.Channel,
+				required: true,
+			},
+			{
+				name: "announcement_channel",
+				description: "What is the announcement channel to post to?",
+				type: ApplicationCommandOptionType.Channel,
+				required: true,
+			},
 		],
 	},
 
 	async chatExecute(interaction) {
-		await (interaction.options.getChannel("forum_channel") as any as ForumChannel).threads.create({ name: "e", message: { content: "crazy" }, });
-	},
+		let responseEmbed = new EmbedBuilder()
+			.setTitle("Releasing...")
+			.setColor(clearColor)
+		interaction.reply({
+			embeds: [responseEmbed],
+			ephemeral: true,
+		});
 
-	async globalMessageInteractionExecute(interaction) {
-		//Get user's a download
+		let postId;
+		await (interaction.options.getChannel("forum_channel") as any as ForumChannel).threads.create({
+			name: interaction.options.getString("title"),
+			message: {
+				files: [
+					interaction.options.getAttachment("banner_image").attachment,
+				],
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.options.getString("title"))
+						.setDescription("```" + interaction.options.getString("short_description") + "```\n```" + "Find any bugs or have any suggestions? Let us know below!" + "```")
+						.setColor(clearColor)
+					//.setThumbnail()
+				],
+				components: [
+					new ActionRowBuilder<ButtonBuilder>()
+						.addComponents(
+							new ButtonBuilder()
+								.setStyle(ButtonStyle.Link)
+								.setURL(interaction.options.getString("yt-video"))
+								.setLabel("Youtube Video")
+								.setEmoji(emojis.youtube),
+							new ButtonBuilder()
+								.setStyle(ButtonStyle.Link)
+								.setURL(interaction.options.getString("linkvertise_download_link"))
+								.setLabel("Download")
+								.setEmoji(emojis.downArrow),
+							new ButtonBuilder()
+								.setStyle(ButtonStyle.Link)
+								.setURL(interaction.options.getString("mcpedl_link"))
+								.setLabel("MCPEDL Page")
+								.setEmoji(emojis.mcpedl),
+						)
+				],
+			}
+		}).then((thread) => postId = thread.id);
+
+		await (interaction.options.getChannel("direct_download_channel") as any as TextChannel).send({
+			files: [
+				interaction.options.getAttachment("banner_image").attachment,
+			],
+			embeds: [
+				new EmbedBuilder()
+					.setTitle(interaction.options.getString("title"))
+					.setDescription("```" + interaction.options.getString("short_description") + "```\n```" + "Find any bugs or have any suggestions? Let us know below!" + "```")
+					.setColor(clearColor)
+				//.setThumbnail()
+			],
+			components: [
+				new ActionRowBuilder<ButtonBuilder>()
+					.addComponents(
+						new ButtonBuilder()
+							.setStyle(ButtonStyle.Link)
+							.setURL(interaction.options.getString("direct_download_link"))
+							.setLabel("Download")
+							.setEmoji(emojis.downArrow),
+						new ButtonBuilder()
+							.setStyle(ButtonStyle.Link)
+							.setURL("https://discord.com/channels/" + interaction.guildId + "/" + interaction.options.getChannel("forum_channel").id + "/" + postId)
+							.setLabel("More Information")
+							.setEmoji(emojis.message),
+					)
+			],
+		});
+
+		await (interaction.options.getChannel("announcement_channel") as any as TextChannel).send({
+			content: interaction.options.getBoolean("ping") ? "@everyone" : "",
+			files: [
+				interaction.options.getAttachment("banner_image").attachment,
+			],
+			embeds: [
+				new EmbedBuilder()
+					.setTitle(interaction.options.getString("title"))
+					.setDescription("```" + interaction.options.getString("short_description") + "```")
+					.setColor(clearColor)
+				//.setThumbnail()
+			],
+			components: [
+				new ActionRowBuilder<ButtonBuilder>()
+					.addComponents(
+						new ButtonBuilder()
+							.setStyle(ButtonStyle.Link)
+							.setURL(interaction.options.getString("linkvertise_download_link"))
+							.setLabel("Download")
+							.setEmoji(emojis.downArrow),
+						new ButtonBuilder()
+							.setStyle(ButtonStyle.Link)
+							.setURL("https://discord.com/channels/" + interaction.guildId + "/" + interaction.options.getChannel("forum_channel").id + "/" + postId)
+							.setLabel("More Information")
+							.setEmoji(emojis.information),
+					)
+			],
+		});
+
+		responseEmbed = new EmbedBuilder()
+			.setTitle("Content Released")
+			.setColor(mainColor)
+		interaction.editReply({
+			embeds: [responseEmbed],
+		});
 	},
 
 };
