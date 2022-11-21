@@ -129,7 +129,9 @@ let dev_toolkit_entry: CustomCommand = {
 						.addFields([
 							{
 								name: "Installation Instructions",
-								value: "```To install this entry, first download the file below. Then, open the file and view it in the com.mojang folder.``` To find the com.mojang folder, view [this article](https://wiki.bedrock.dev/guide/project-setup.html#the-com-mojang-folder).",
+								value: "```1. Fownload the file below. Then, open the file and view it in the com.mojang folder.``` To find the com.mojang folder, view [this article](https://wiki.bedrock.dev/guide/project-setup.html#the-com-mojang-folder)."
+									+ "``` 2. For resource and behavior packs, move the installed pack from its current folder to its development folder.\n\nEx. resource_packs => development_resource_packs```"
+									+ "``` 3. Open the installed pack and move on to modification instructions.```",
 								inline: false,
 							},
 							{
