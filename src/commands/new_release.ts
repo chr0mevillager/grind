@@ -182,7 +182,7 @@ let new_release: CustomCommand = {
 					.setTitle(interaction.options.getString("title"))
 					.setDescription("```" + interaction.options.getString("short_description") + "```")
 					.setColor(clearColor)
-				//.setThumbnail()
+					.setThumbnail("https://github.com/chr0mevillager/grind/blob/master/src/artwork/new.png?raw=true")
 			],
 			components: [
 				new ActionRowBuilder<ButtonBuilder>()
