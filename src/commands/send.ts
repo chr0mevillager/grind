@@ -9,6 +9,7 @@ let send: CustomCommand = {
 		name: "send",
 		description: "Send a button, message, or image.",
 		type: ApplicationCommandType.ChatInput,
+		defaultMemberPermissions: "Administrator",
 		options: [
 			{
 				name: "button",
