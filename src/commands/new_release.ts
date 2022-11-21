@@ -26,6 +26,7 @@ let new_release: CustomCommand = {
 		description: "Post a new release!",
 		type: ApplicationCommandType.ChatInput,
 		defaultMemberPermissions: "Administrator",
+		dmPermission: false,
 		options: [
 			{
 				name: "title",
