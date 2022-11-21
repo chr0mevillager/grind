@@ -162,12 +162,12 @@ let new_release: CustomCommand = {
 							.setStyle(ButtonStyle.Link)
 							.setURL(interaction.options.getString("direct_download_link"))
 							.setLabel("Download")
-							.setEmoji(emojis.downArrow),
+							.setEmoji(emojis.premiumDownArrow),
 						new ButtonBuilder()
 							.setStyle(ButtonStyle.Link)
 							.setURL("https://discord.com/channels/" + interaction.guildId + "/" + interaction.options.getChannel("forum_channel").id + "/" + postId)
 							.setLabel("More Information")
-							.setEmoji(emojis.message),
+							.setEmoji(emojis.premiumInformation),
 					)
 			],
 		});

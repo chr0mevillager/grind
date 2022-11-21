@@ -1,10 +1,13 @@
 const emojis = {
 	youtube: { id: "1044285003388952606" },
-	upArrow: { id: "992900371963986010" },
-	downArrow: { id: "992900383527673977" },
 	mcpedl: { id: "1044285390577741864" },
-	message: { id: "992900359657885727" },
-	information: { id: "992900377534005389" },
+
+	upArrow: { id: "1044301477176418334" },
+	downArrow: { id: "1044301481102278736" },
+	information: { id: "1044301488769486908" },
+
+	premiumDownArrow: { id: "1044301492787630100" },
+	premiumInformation: { id: "1044301496524734514" },
 };
 
 export default emojis;
