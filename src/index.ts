@@ -2,76 +2,47 @@ import "./exports/vars";
 import { client } from "./exports/client";
 import commands from "./commands";
 
-//Commands
+// Find the function to run when any type of interaction is created
 client.on("interactionCreate", async (interaction) => {
-	// Find the function to run when any type of interaction is created
 	if (interaction.isChatInputCommand()) {
 		const command = commands[interaction.commandName];
 
 		if (command && command.data.name == (interaction.commandName)) {
 			try {
 				await command.chatExecute(interaction);
-			} catch (error) { }
+			} catch (error) {
+				console.error(error);
+			}
 		}
-		// }
+	} else if (interaction.isModalSubmit()) {
+		const command = commands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
+		if (command && command.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
+			try {
+				await command.modalExecute(interaction);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	} else if (interaction.isButton() || interaction.isSelectMenu()) {
+		const command = commands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
 
+		if (command && command.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
+			try {
+				await command.globalMessageInteractionExecute(interaction);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	} else if (interaction.isContextMenuCommand()) {
+		const command = commands[interaction.commandName];
+		if (command && command.data.name == (interaction.commandName)) {
+			try {
+				await command.contextMenuExecute(interaction);
+			} catch (error) {
+				console.error(error);
+			}
+		}
 
-
-
-
-		// else if (interaction.type === InteractionType.ModalSubmit) {
-		// 	const publicCommands = commands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
-		// 	const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
-
-		// 	if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
-		// 		try {
-		// 			await publicCommands.modalExecute(interaction);
-		// 		} catch (error) {
-		// 			await logMessage(error, "index (modal response)");
-		// 		}
-		// 	} else {
-		// 		try {
-		// 			await developerCommands.modalExecute(interaction);
-		// 		} catch (error) {
-		// 			await logMessage(error, "index (modal response) & dev command");
-		// 		}
-		// 	}
-		// } else if (interaction.isButton() || interaction.isSelectMenu()) {
-		// 	const publicCommands = commands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
-		// 	const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
-
-		// 	if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
-		// 		try {
-		// 			if (!publicCommands.globalMessageInteractionnExecute) return;
-		// 			await publicCommands.globalMessageInteractionnExecute(interaction);
-		// 		} catch (error) {
-		// 			await logMessage(error, "index (button response)");
-		// 		}
-		// 	} else if (developerCommands && developerCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
-		// 		try {
-		// 			if (!developerCommands.globalMessageInteractionnExecute) return;
-		// 			await developerCommands.globalMessageInteractionnExecute(interaction);
-		// 		} catch (error) {
-		// 			await logMessage(error, "index (global button response) & dev command");
-		// 		}
-		// 	}
-		// } else if (interaction.isContextMenuCommand()) {
-		// 	const publicCommands = commands[interaction.commandName];
-		// 	const developerCommands = commands.developerCommands[interaction.commandName];
-
-		// 	if (publicCommands && publicCommands.data.name == (interaction.commandName)) {
-		// 		try {
-		// 			await publicCommands.contextMenuExecute(interaction);
-		// 		} catch (error) {
-		// 			await logMessage(error, "index (context command)");
-		// 		}
-		// 	} else {
-		// 		try {
-		// 			await developerCommands.contextMenuExecute(interaction);
-		// 		} catch (error) {
-		// 			await logMessage(error, "index & dev command (context command)");
-		// 		}
-		// 	}
 	}
 });
 
